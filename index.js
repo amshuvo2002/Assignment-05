@@ -36,17 +36,80 @@ for (let button of callBtn) {
 
 // history Section
 
-const callHistory = document.getElementById('call-history');
 
-button.addEventListener('click', function() {
-  const card = button.closest('.card');
-  const serviceName = card.querySelector('.name').textContent;
-  const serviceNumber = card.querySelector('.number').textContent;
+const buttons = document.querySelectorAll(".call-btn");
+const historyDiv = document.getElementById("call-history");
 
-  const li = document.createElement('li');
-  li.textContent = `Service: ${serviceName}, Number: ${serviceNumber}`;
-  callHistory.appendChild(li);
+for (const btn of buttons) {
+    btn.addEventListener("click", () => {
+
+        if (coins < 20) {
+            return;
+        }
+
+        const card = btn.closest(".card");
+        const serviceName = card.querySelector(".name").textContent;
+        const serviceNumber = card.querySelector(".number").textContent;
+        const time = new Date().toLocaleTimeString();
+
+        historyDiv.innerHTML = `
+            <div class="m-3 flex justify-between items-center">
+                <div>
+                    <h1 class="font-bold">${serviceName}</h1>
+                    <p class="text-gray-500">${serviceNumber}</p>
+                </div>
+                <div>
+                    <p>${time}</p>
+                </div>
+            </div>
+        ` + historyDiv.innerHTML;
+    });
+}
+
+const clearBtn = document.getElementById("clear-history");
+const historyD = document.getElementById("call-history");
+
+clearBtn.addEventListener("click", () => {
+    historyD.innerHTML = "";
 });
+
+
+
+
+
+let copyCount = 0;
+const copyCountDisplay = document.getElementById('copyCount');
+const copyButtons = document.querySelectorAll('.copy-btn');
+
+for (let button of copyButtons) {
+  button.addEventListener('click', function() {
+    const card = button.closest('.card');
+    const hotlineNumber = card.querySelector('.hotline-number').textContent;
+
+    
+    navigator.clipboard.writeText(hotlineNumber)
+      .then(() => {
+        if (hotlineNumber) { 
+          alert(`Hotline number ${hotlineNumber} copied!`);
+          copyCount++;
+          copyCountDisplay.textContent = copyCount;
+        } else if (!hotlineNumber) {
+          alert("কোনো number নেই!");
+        }
+      })
+      .catch(err => {
+        alert("Failed to copy!");
+        console.error(err);
+      });
+  });
+}
+
+
+
+
+
+   
+
 
 
 
